@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Print Layout Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style.css">
+    
+</head>
+<body class="bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen p-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-indigo-900 mb-2">จัดเลย์เอาต์รูปภาพสำหรับพิมพ์</h1>
+            <p class="text-gray-600">ออกแบบและจัดวางรูปภาพบนกระดาษ A4 สำหรับการพิมพ์</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Control Panel -->
+                <div class="space-y-6">
+                    <!-- File Upload Section -->
+                    <div class="bg-gray-50 p-6 rounded-xl border-2 border-dashed border-indigo-200 hover:border-indigo-400 transition-colors">
+                        <label class="block text-lg font-medium text-indigo-700 mb-2">เลือกรูปภาพ</label>
+                        <input type="file" accept="image/*" id="imageInput" 
+                               class="w-full text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                    </div>
+
+                    <!-- Dimensions Controls -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-xl">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">ความกว้าง (ซม.)</label>
+                            <input type="number" id="widthInput" value="5" min="1" max="21" 
+                                   class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-xl">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">ความสูง (ซม.)</label>
+                            <input type="number" id="heightInput" value="5" min="1" max="29.7"
+                                   class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <!-- Copies Input -->
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">จำนวนที่ต้องการพิมพ์</label>
+                        <input type="number" id="copiesInput" value="1" min="1"
+                               class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    </div>
+
+                    <!-- Print Info -->
+                    <div id="printInfo" class="hidden bg-indigo-50 p-6 rounded-xl">
+                        <h3 class="text-lg font-semibold text-indigo-900 mb-3">รายละเอียดการพิมพ์</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white p-3 rounded-lg">
+                                <p class="text-sm text-gray-500">จำนวนรูปต่อแถว</p>
+                                <p class="text-xl font-bold text-indigo-600" id="photosPerRow">0</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <p class="text-sm text-gray-500">จำนวนรูปต่อคอลัมน์</p>
+                                <p class="text-xl font-bold text-indigo-600" id="photosPerColumn">0</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <p class="text-sm text-gray-500">จำนวนรูปต่อหน้า</p>
+                                <p class="text-xl font-bold text-indigo-600" id="photosPerPage">0</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <p class="text-sm text-gray-500">จำนวนหน้าที่ต้องพิมพ์</p>
+                                <p class="text-xl font-bold text-indigo-600" id="totalPages">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <button id="printButton" disabled
+                                    class="w-full bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                พิมพ์
+                            </button>
+                        </div>
+                        <button id="downloadPdfButton" disabled
+                                class="bg-green-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            ดาวน์โหลด PDF
+                        </button>
+                        <button id="downloadImageButton" disabled
+                                class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            ดาวน์โหลดรูปภาพ
+                        </button>
+                        <button id="clearButton" disabled
+                                class="col-span-2 bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            ล้างข้อมูล
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Area -->
+                <div class="relative bg-white border border-gray-300 rounded-xl shadow-lg overflow-hidden" style="aspect-ratio: 1/1.414;" id="previewArea">
+                    <!-- Placeholder when no image -->
+                    <div id="previewPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+                        <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <p class="text-lg font-medium">เลือกรูปภาพเพื่อดูตัวอย่าง</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bg-indigo-900 text-white py-6 rounded-xl mt-12">
+            <div class="text-center">
+                <h2 class="text-xl font-bold mb-2">กลุ่มบ้านนี้มีรัก</h2>
+                <p class="text-sm">ทุกการออกแบบเปรียบเสมือนการแบ่งปันความรักและความอบอุ่น ❤️</p>
+                <p class="text-xs mt-2">© 2024 บ้านนี้มีรัก</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
