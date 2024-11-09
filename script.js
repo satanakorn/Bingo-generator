@@ -1,8 +1,6 @@
-  // Constants for A4 size
   const A4_WIDTH = 21;
   const A4_HEIGHT = 29.7;
 
-  // DOM Elements
   const imageInput = document.getElementById('imageInput');
   const widthInput = document.getElementById('widthInput');
   const heightInput = document.getElementById('heightInput');
@@ -17,7 +15,6 @@
 
   let selectedImage = null;
 
-  // Event Listeners
   imageInput.addEventListener('change', handleImageUpload);
   widthInput.addEventListener('input', updateLayout);
   heightInput.addEventListener('input', updateLayout);
@@ -49,7 +46,6 @@
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF('p', 'cm', [21, 29.7]);
       
-      // Hide placeholder before capturing
       previewPlaceholder.style.display = 'none';
       
       const canvas = await html2canvas(previewArea, {
@@ -65,7 +61,6 @@
   }
 
   async function downloadAsImage() {
-      // Hide placeholder before capturing
       previewPlaceholder.style.display = 'none';
       
       const canvas = await html2canvas(previewArea, {
@@ -81,25 +76,21 @@
   }
 
   function clearAll() {
-      // Reset all inputs
       imageInput.value = '';
       widthInput.value = '5';
       heightInput.value = '5';
       copiesInput.value = '1';
       
-      // Reset preview
       selectedImage = null;
       previewArea.innerHTML = '';
       previewPlaceholder.style.display = 'flex';
       
-      // Reset UI states
       printButton.disabled = true;
       downloadPdfButton.disabled = true;
       downloadImageButton.disabled = true;
       clearButton.disabled = true;
       printInfo.classList.add('hidden');
       
-      // Clear preview area
       while (previewArea.firstChild && previewArea.firstChild !== previewPlaceholder) {
           previewArea.removeChild(previewArea.firstChild);
       }
@@ -112,19 +103,16 @@
       const height = Number(heightInput.value);
       const copies = Number(copiesInput.value);
 
-      // Calculate layout
       const photosPerRow = Math.floor(A4_WIDTH / width);
       const photosPerColumn = Math.floor(A4_HEIGHT / height);
       const photosPerPage = photosPerRow * photosPerColumn;
       const totalPages = Math.ceil(copies / photosPerPage);
 
-      // Update display
       document.getElementById('photosPerRow').textContent = photosPerRow;
       document.getElementById('photosPerColumn').textContent = photosPerColumn;
       document.getElementById('photosPerPage').textContent = photosPerPage;
       document.getElementById('totalPages').textContent = totalPages;
 
-      // Generate preview
       previewArea.innerHTML = '';
       for (let row = 0; row < photosPerColumn; row++) {
           for (let col = 0; col < photosPerRow; col++) {
@@ -146,7 +134,6 @@
       }
   }
 
-  // Styles for print view
   const printStyles = document.createElement('style');
   printStyles.textContent = `
       @media print {
